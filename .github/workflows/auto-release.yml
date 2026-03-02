@@ -1,0 +1,30 @@
+name: Auto Release
+
+on: [push]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # 必须具有写入权限才能创建 Release 和 Tag
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 🎁 附赠功能：因为看到这是一个 LaTeX 简历项目，如果你希望每次 push 后自动编译并把简历 PDF 添加到 Release 的附件中，
+      # 可以将下面两段取消注释。
+      - name: Compile LaTeX document
+        uses: xu-cheng/latex-action@v3
+        with:
+        root_file: cv.tex
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          # GitHub Release 强行依赖 tag，因此这里用 commit sha 动态创建一个唯一的 tag
+          tag_name: build-${{ github.sha }}
+          name: Auto-Release ${{ trunc(github.sha, 7) }}
+          # 将当前 commit 的 message 作为 Release 的说明 (Release Note)
+          body: ${{ github.event.head_commit.message }}
+          files: cv.pdf # 如果你启用了上面的 LaTeX 编译步骤，请把这行前面的井号删掉来附加上 PDF
