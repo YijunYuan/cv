@@ -17,14 +17,14 @@ jobs:
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v3
         with:
-        root_file: cv.tex
+          root_file: cv.tex
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           # GitHub Release 强行依赖 tag，因此这里用 commit sha 动态创建一个唯一的 tag
           tag_name: build-${{ github.sha }}
-          name: Auto-Release ${{ trunc(github.sha, 7) }}
+          name: Auto-Release ${{ github.sha }}
           # 将当前 commit 的 message 作为 Release 的说明 (Release Note)
           body: ${{ github.event.head_commit.message }}
-          files: cv.pdf # 如果你启用了上面的 LaTeX 编译步骤，请把这行前面的井号删掉来附加上 PDF
+          # files: cv.pdf # 如果你启用了上面的 LaTeX 编译步骤，请把这行前面的井号删掉来附加上 PDF
