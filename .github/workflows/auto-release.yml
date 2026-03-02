@@ -27,4 +27,4 @@ jobs:
           name: Auto-Release ${{ github.sha }}
           # 将当前 commit 的 message 作为 Release 的说明 (Release Note)
           body: ${{ github.event.head_commit.message }}
-          # files: cv.pdf # 如果你启用了上面的 LaTeX 编译步骤，请把这行前面的井号删掉来附加上 PDF
+          files: cv.pdf # 如果你启用了上面的 LaTeX 编译步骤，请把这行前面的井号删掉来附加上 PDF
